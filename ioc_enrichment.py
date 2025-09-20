@@ -2,11 +2,19 @@
 IOC Enrichment Script
 Author: Thristha Gurajala
 Description:
-Reads indicators from indicators.txt, simulates API enrichment,
-and saves results to results.json for SOC automation workflows.
+Reads indicators from indicators.txt, simulates IOC enrichment,
+and demonstrates secure API key handling using dotenv.
 """
 
 import json
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+VT_API_KEY = os.getenv("VT_API_KEY", "not_set")
+ABUSEIPDB_API_KEY = os.getenv("ABUSEIPDB_API_KEY", "not_set")
 
 def mock_query_api(indicator):
     """
@@ -14,9 +22,19 @@ def mock_query_api(indicator):
     In real use, this would call VirusTotal or AbuseIPDB with an API key.
     """
     if "malicious" in indicator:
-        return {"indicator": indicator, "status": "malicious"}
+        return {
+            "indicator": indicator,
+            "status": "malicious",
+            "source": "VirusTotal",
+            "api_key_used": VT_API_KEY[:6] + "..." if VT_API_KEY != "not_set" else "missing"
+        }
     else:
-        return {"indicator": indicator, "status": "clean"}
+        return {
+            "indicator": indicator,
+            "status": "clean",
+            "source": "AbuseIPDB",
+            "api_key_used": ABUSEIPDB_API_KEY[:6] + "..." if ABUSEIPDB_API_KEY != "not_set" else "missing"
+        }
 
 def main():
     input_file = "indicators.txt"
@@ -37,7 +55,7 @@ def main():
     for ioc in indicators:
         result = mock_query_api(ioc)
         results.append(result)
-        print(f"[+] {result['indicator']} → {result['status']}")
+        print(f"[+] {result['indicator']} → {result['status']} (source: {result['source']})")
 
     # Save results to JSON file
     with open(output_file, "w") as f:
@@ -47,3 +65,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
