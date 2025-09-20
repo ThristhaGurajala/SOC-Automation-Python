@@ -22,7 +22,7 @@ The scripts are designed to reduce alert fatigue and speed up incident response 
 ## 🚀 How to Use
 1. Clone this repo:
    ```bash
-   git clone https://github.com/your-username/soc-automation-python.git
+   git clone https://github.com/ThristhaGurajala/soc-automation-python.git
    ```
 2. Install requirements:
    ```bash
