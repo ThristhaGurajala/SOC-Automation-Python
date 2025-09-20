@@ -2,12 +2,11 @@
 IOC Enrichment Script
 Author: Thristha Gurajala
 Description:
-This script simulates IOC (Indicators of Compromise) enrichment using public APIs
-like VirusTotal and AbuseIPDB. It helps SOC teams quickly triage alerts.
+Reads indicators from indicators.txt, simulates API enrichment,
+and saves results to results.json for SOC automation workflows.
 """
 
-# Mock list of indicators
-indicators = ["8.8.8.8", "malicious-domain.com", "192.168.1.10"]
+import json
 
 def mock_query_api(indicator):
     """
@@ -20,11 +19,31 @@ def mock_query_api(indicator):
         return {"indicator": indicator, "status": "clean"}
 
 def main():
+    input_file = "indicators.txt"
+    output_file = "results.json"
+    results = []
+
     print("Starting IOC enrichment...\n")
+
+    # Read indicators from file
+    try:
+        with open(input_file, "r") as f:
+            indicators = [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        print(f"Error: {input_file} not found. Please create the file with IOCs.")
+        return
+
+    # Process indicators
     for ioc in indicators:
         result = mock_query_api(ioc)
+        results.append(result)
         print(f"[+] {result['indicator']} → {result['status']}")
-    print("\nIOC enrichment completed.")
+
+    # Save results to JSON file
+    with open(output_file, "w") as f:
+        json.dump(results, f, indent=4)
+
+    print(f"\nIOC enrichment completed. Results saved to {output_file}")
 
 if __name__ == "__main__":
     main()
