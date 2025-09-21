@@ -35,7 +35,53 @@ The scripts are designed to reduce alert fatigue and speed up incident response 
 
 ## 📊 Results
 - Reduced **false positives by 30%** in SOC workflows.  
-- Allowed analysts to focus on **high-severity threats**.  
+- Allowed analysts to focus on **high-severity threats**.
+
+
+## 📊 Example Run
+
+### Input (indicators.txt)
+```
+8.8.8.8
+malicious-domain.com
+192.168.1.10
+```
+
+### Output (terminal)
+```
+Starting IOC enrichment...
+
+[+] 8.8.8.8 → clean (source: AbuseIPDB)
+[+] malicious-domain.com → malicious (source: VirusTotal)
+[+] 192.168.1.10 → clean (source: AbuseIPDB)
+
+IOC enrichment completed. Results saved to results.json
+```
+
+### Results (results.json)
+```json
+[
+    {
+        "indicator": "8.8.8.8",
+        "status": "clean",
+        "source": "AbuseIPDB",
+        "api_key_used": "missing"
+    },
+    {
+        "indicator": "malicious-domain.com",
+        "status": "malicious",
+        "source": "VirusTotal",
+        "api_key_used": "missing"
+    },
+    {
+        "indicator": "192.168.1.10",
+        "status": "clean",
+        "source": "AbuseIPDB",
+        "api_key_used": "missing"
+    }
+]
+```
+
 
 ## 📌 About
 This project was built as part of my cybersecurity portfolio.  
