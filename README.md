@@ -81,6 +81,9 @@ IOC enrichment completed. Results saved to results.json
     }
 ]
 ```
+### 📸 Screenshot of Output
+![IOC Enrichment Output](output_example.png)
+
 
 
 ## 📌 About
